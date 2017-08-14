@@ -1,0 +1,56 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Game of Thrones Coding Requirements\
+\
+
+\b0 The previous coding requirements for this document where outdated. The database that was originally listed, Open Movie Database, had gone private during the month of May. Since this was simply intended to be a test application to judge an applicant\'92s quality of work, making the applicant pay for an api key, or having the department pay for one, makes absolutely no sense. Instead, I used The Movie Database api as a replacement, which provides a similar functionality, if not exactly the same. Once I had completed making my version of the app with the new database, I was asked to rewrite the requirements with information on how to use the new database, including replacing the old wireframes with screenshots of my application, as some of the information that OMDB has is not in TMDB, and vice versa.\
+\
+
+\b ID Cards Animation
+\b0 \
+\
+The current ID cards activity is built so that clicking on a stack of ID cards will only switch between gridViews, rather than opening a whole new activity. Because of this, a simple shared element transition could not be used without making a new activity and rewriting large portions of the code to accommodate for that.\
+\
+To avoid that situation, I instead created a third gridView, an essential copy of the second gridView that could be animated. In this new gridView, the ID cards loaded as they were on the selected stack, rather than in their final places. Then based on the starting position and final position, they are given a translationAnimation, moving to their final place. If they are any card but the top card of the stack, they are also given a rotationAnimation, allowing them to smoothly slide into place as the animation finishes. Once all of these are in place, the original second gridView is loaded, ensuring that any bad placements will disappear.\
+\
+Additionally, when the stack is clicked on the first gridView, an alphaAnimation is placed on each other stack, making them fade out before translation animation occurs. Each animation\'92s duration currently falls within the recommended time for material design, and the ID cards have a interpolator for following the standard curve of material design.\
+\
+
+\b Branded Launch\
+\
+
+\b0 I was asked to add a some form of animation for the welcome activity, focused on the logo. Originally, I had an idea of putting a rotationAnimation around the Y-axis on the logo before the rest of the welcome activity faded into view, but after reading through both material design guidelines and Cigna\'92s own branding guidelines, I found that that kind of animation is not recommended for user accessibility, and Cigna has a policy where animations can\'92t be placed on the logo without approval from Brand Management. Additionally, any \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 modification of the logo confuses its meaning and diminishes its impact.\
+\
+Instead, I followed the recommended material design pattern of a branded launch, a background page containing only the Cigna logo that appears during the launch of the app, lasting only as long as it takes for the XML page of the welcome activity to load. If the user opens the already loaded app, the launch page will not be shown.\
+\
+Currently, the branded launch uses a horizontal version of the Cigna logo. This can easily be replaced with any version of the logo. The Tree of Life being used alone would require approval from Brand Management.\
+\
+
+\b Menu Animation\
+\
+
+\b0 Many complaints of older users of the myCigna app are regarding a lack of knowledge of opening the side menu and how the three bars/hamburger icon works. In order to fix this, I was tasked with making an animation where the hamburger icon would be highlighted, then the menu would open and close, indicating it\'92s function to the user.\
+\
+Because the myCigna app uses the AppBase, implementing this animation into the current myCigna app isn\'92t possible due to missing functions. Rather than spending the time setting up the AppBase and writing the function for a proof of concept, I was instead recommended to create an example app that would demonstrate the functionality.\
+\
+I hit a big road block here with the fact that the hamburger icon is not created by the XML layout files, but rather populated programmatically by a function that is called when setting up the side menu in the code. Due to this, I don\'92t have access to the imageView that the drawable icon is located within, and there are very few animations or even functions that can be applied to it.\
+\
+On the other hand, the menu itself is very easy to animate. The menu has functions that allow the program to automatically open and close it. Using Runnables, functions that are delayed until the app is loaded, I can make the menu open for a second and then close, showing the users that it exists.\
+\
+It is also possible to make the menu open halfway, though it is dramatically harder for not much payoff. It involves the use of MotionEvents and Runnables, essentially simulating a user touching the edge of the screen, dragging the menu out a little, and then letting go, only revealing half the menu. However, the amount of MotionEvents required to make this happen, due to multiple events being needed to drag it out, make this solution a little unreasonable.\
+\
+My solution to animating the hamburger icon also requires the use of MotionEvents, though far fewer than the halfway animation. Essentially, the menu is locked closed via a function, then a MotionEvent is placed onto the icon, causing it to ripple effect that is naturally part of the icon\'92s theme to trigger. Once the event finishes, the menu is unlocked, and it opens and closes, showing the user that the hamburger icon opens the menu. \
+\
+
+\b Custom Progress Bar\
+\
+
+\b0 I was also asked to create a new progress bar for the myCigna app, to replace the spinning circles that populate the app. Since many of those progress bars seem to also be part of the AppBase, I decided to make my changes in another demo app, to show what a custom progress bar would look like.\
+\
+For this, I am simply giving the progress bar a animated drawable, made from the myCigna app icon that I have edited with a online editing software. It consists of four states, each with one corner of the myCigna logo showing. These loop together, going in a circle as each one of the corners appear. The durations of how long each corner appears can be sped up or slowed down, or a different set of assets can be used. It\'92s simply a matter of giving the progress bars a indeterminateDrawable and making that drawable a animationDrawable.}
